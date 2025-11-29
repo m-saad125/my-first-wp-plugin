@@ -37,7 +37,7 @@ class STC_Frontend {
 		$rating_enabled = get_option( 'stc_enable_rating' );
 		?>
 		<div class="stc-submission-form">
-			<form action="" method="post">
+			<form action="" method="post" enctype="multipart/form-data">
 				<?php wp_nonce_field( 'stc_submit_testimonial', 'stc_nonce' ); ?>
 				
 				<p>
@@ -49,18 +49,28 @@ class STC_Frontend {
 					<label for="stc_email"><?php _e( 'Your Email', 'simple-testimonials-collector' ); ?> *</label>
 					<input type="email" name="stc_email" id="stc_email" required>
 				</p>
+				
+				<p>
+					<label for="stc_image"><?php _e( 'Your Photo (Optional)', 'simple-testimonials-collector' ); ?></label>
+					<input type="file" name="stc_image" id="stc_image" accept="image/*">
+				</p>
 
 				<?php if ( $rating_enabled ) : ?>
-				<p>
-					<label for="stc_rating"><?php _e( 'Rating', 'simple-testimonials-collector' ); ?></label>
-					<select name="stc_rating" id="stc_rating">
-						<option value="5">5 - <?php _e( 'Excellent', 'simple-testimonials-collector' ); ?></option>
-						<option value="4">4 - <?php _e( 'Very Good', 'simple-testimonials-collector' ); ?></option>
-						<option value="3">3 - <?php _e( 'Good', 'simple-testimonials-collector' ); ?></option>
-						<option value="2">2 - <?php _e( 'Fair', 'simple-testimonials-collector' ); ?></option>
-						<option value="1">1 - <?php _e( 'Poor', 'simple-testimonials-collector' ); ?></option>
-					</select>
-				</p>
+				<div class="stc-rating-input">
+					<label><?php _e( 'Rating', 'simple-testimonials-collector' ); ?></label>
+					<div class="stc-stars">
+						<input type="radio" name="stc_rating" id="rate-5" value="5">
+						<label for="rate-5" title="5 stars">★</label>
+						<input type="radio" name="stc_rating" id="rate-4" value="4">
+						<label for="rate-4" title="4 stars">★</label>
+						<input type="radio" name="stc_rating" id="rate-3" value="3">
+						<label for="rate-3" title="3 stars">★</label>
+						<input type="radio" name="stc_rating" id="rate-2" value="2">
+						<label for="rate-2" title="2 stars">★</label>
+						<input type="radio" name="stc_rating" id="rate-1" value="1">
+						<label for="rate-1" title="1 star">★</label>
+					</div>
+				</div>
 				<?php endif; ?>
 
 				<p>
@@ -113,6 +123,19 @@ class STC_Frontend {
 				update_post_meta( $post_id, '_stc_rating', $rating );
 			}
 
+			// Handle Image Upload
+			if ( ! empty( $_FILES['stc_image']['name'] ) ) {
+				require_once( ABSPATH . 'wp-admin/includes/image.php' );
+				require_once( ABSPATH . 'wp-admin/includes/file.php' );
+				require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
+				$attachment_id = media_handle_upload( 'stc_image', $post_id );
+
+				if ( ! is_wp_error( $attachment_id ) ) {
+					set_post_thumbnail( $post_id, $attachment_id );
+				}
+			}
+
 			// Redirect to avoid resubmission and show success message
 			wp_redirect( add_query_arg( 'stc_submitted', '1' ) );
 			exit;
@@ -141,20 +164,27 @@ class STC_Frontend {
 			while ( $query->have_posts() ) {
 				$query->the_post();
 				$rating = get_post_meta( get_the_ID(), '_stc_rating', true );
+				$email = get_post_meta( get_the_ID(), '_stc_email', true );
 				?>
 				<div class="stc-testimonial-item">
-					<?php if ( has_post_thumbnail() ) : ?>
-						<div class="stc-testimonial-image">
-							<?php the_post_thumbnail( 'thumbnail' ); ?>
+					<div class="stc-testimonial-image">
+						<?php 
+						if ( has_post_thumbnail() ) {
+							the_post_thumbnail( 'thumbnail' );
+						} else {
+							echo get_avatar( $email, 100 );
+						}
+						?>
+					</div>
+
+					<?php if ( $rating ) : ?>
+						<div class="stc-rating">
+							<?php echo str_repeat( '&#9733;', intval( $rating ) ); ?>
 						</div>
 					<?php endif; ?>
 
-					<?php if ( $rating ) : ?>
-						<span class="stc-rating"><?php echo str_repeat( '&#9733;', intval( $rating ) ); ?></span>
-					<?php endif; ?>
-
 					<div class="stc-testimonial-content">
-						<?php the_content(); ?>
+						&ldquo;<?php the_content(); ?>&rdquo;
 					</div>
 					
 					<div class="stc-testimonial-author">
