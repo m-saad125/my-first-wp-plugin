@@ -42,7 +42,7 @@ $myUpdateChecker = PucFactory::buildUpdateChecker(
 $myUpdateChecker->setBranch('main');
 
 // Optional: If you're using a private repository, specify the access token like this:
-$myUpdateChecker->setAuthentication('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');
+$myUpdateChecker->setAuthentication('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');
 
 /**
  * Begins execution of the plugin.
