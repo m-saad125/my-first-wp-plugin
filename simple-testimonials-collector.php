@@ -33,7 +33,7 @@ require 'plugin-update-checker/plugin-update-checker.php';
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 $myUpdateChecker = PucFactory::buildUpdateChecker(
-	'https://github.com/m-saad125/my-first-wp-plugin',
+	'https://github.com/m-saad125/my-first-wp-plugin/',
 	__FILE__,
 	'simple-testimonials-collector'
 );
@@ -42,7 +42,7 @@ $myUpdateChecker = PucFactory::buildUpdateChecker(
 $myUpdateChecker->setBranch('main');
 
 // Optional: If you're using a private repository, specify the access token like this:
-$myUpdateChecker->setAuthentication('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');
+// $myUpdateChecker->setAuthentication('your_access_token_here');
 
 /**
  * Begins execution of the plugin.
