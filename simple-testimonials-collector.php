@@ -3,7 +3,7 @@
  * Plugin Name: Simple Testimonials Collector
  * Plugin URI:  https://dnnengineer.com/simple-testimonials-collector
  * Description: A simple plugin to collect and display testimonials.
- * Version:     2.0.1
+ * Version:     2.0.2
  * Author:      Saad
  * Author URI:  https://dnnengineer.com
  * License:     GPL-2.0+
