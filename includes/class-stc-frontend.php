@@ -16,10 +16,11 @@ class STC_Frontend {
 	}
 
 	/**
-	 * Enqueue styles.
+	 * Enqueue styles and scripts.
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style( 'stc-style', STC_PLUGIN_URL . 'assets/css/stc-style.css', array(), STC_VERSION, 'all' );
+		wp_enqueue_script( 'stc-script', STC_PLUGIN_URL . 'assets/js/stc-script.js', array(), STC_VERSION, true );
 	}
 
 	/**
@@ -136,20 +137,28 @@ class STC_Frontend {
 
 		ob_start();
 		if ( $query->have_posts() ) {
-			echo '<div class="stc-testimonials-list">';
+			echo '<div class="stc-testimonials-carousel">';
 			while ( $query->have_posts() ) {
 				$query->the_post();
 				$rating = get_post_meta( get_the_ID(), '_stc_rating', true );
 				?>
 				<div class="stc-testimonial-item">
+					<?php if ( has_post_thumbnail() ) : ?>
+						<div class="stc-testimonial-image">
+							<?php the_post_thumbnail( 'thumbnail' ); ?>
+						</div>
+					<?php endif; ?>
+
+					<?php if ( $rating ) : ?>
+						<span class="stc-rating"><?php echo str_repeat( '&#9733;', intval( $rating ) ); ?></span>
+					<?php endif; ?>
+
 					<div class="stc-testimonial-content">
 						<?php the_content(); ?>
 					</div>
+					
 					<div class="stc-testimonial-author">
-						<strong><?php the_title(); ?></strong>
-						<?php if ( $rating ) : ?>
-							<span class="stc-rating"><?php echo str_repeat( '&#9733;', intval( $rating ) ); ?></span>
-						<?php endif; ?>
+						<?php the_title(); ?>
 					</div>
 				</div>
 				<?php

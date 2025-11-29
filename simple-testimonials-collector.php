@@ -3,7 +3,7 @@
  * Plugin Name: Simple Testimonials Collector
  * Plugin URI:  https://dnnengineer.com/simple-testimonials-collector
  * Description: A simple plugin to collect and display testimonials.
- * Version:     1.0.0
+ * Version:     2.0.1
  * Author:      Saad
  * Author URI:  https://dnnengineer.com
  * License:     GPL-2.0+
@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Define plugin constants
-define( 'STC_VERSION', '1.0.0' );
+define( 'STC_VERSION', '2.0.1' );
 define( 'STC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'STC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
@@ -25,6 +25,24 @@ define( 'STC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-stc-loader.php';
+
+/**
+ * Initialize Plugin Update Checker
+ */
+require 'plugin-update-checker/plugin-update-checker.php';
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+
+$myUpdateChecker = PucFactory::buildUpdateChecker(
+	'https://github.com/m-saad125/my-first-wp-plugin',
+	__FILE__,
+	'simple-testimonials-collector'
+);
+
+// Set the branch that contains the stable release.
+$myUpdateChecker->setBranch('main');
+
+// Optional: If you're using a private repository, specify the access token like this:
+$myUpdateChecker->setAuthentication('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');
 
 /**
  * Begins execution of the plugin.

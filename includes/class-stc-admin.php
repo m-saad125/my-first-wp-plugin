@@ -11,6 +11,7 @@ class STC_Admin {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'admin_post_stc_approve_testimonial', array( $this, 'handle_approve_testimonial' ) );
 	}
 
 	/**
@@ -77,5 +78,32 @@ class STC_Admin {
 			</form>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Handle the approve testimonial action.
+	 */
+	public function handle_approve_testimonial() {
+		if ( ! isset( $_GET['post_id'] ) ) {
+			return;
+		}
+
+		$post_id = intval( $_GET['post_id'] );
+
+		check_admin_referer( 'stc_approve_testimonial_' . $post_id );
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_die( __( 'You do not have permission to edit this post.', 'simple-testimonials-collector' ) );
+		}
+
+		$post_data = array(
+			'ID'          => $post_id,
+			'post_status' => 'publish',
+		);
+
+		wp_update_post( $post_data );
+
+		wp_redirect( admin_url( 'edit.php?post_type=testimonial&stc_approved=1' ) );
+		exit;
 	}
 }

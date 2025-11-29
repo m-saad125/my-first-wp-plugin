@@ -30,39 +30,222 @@
 .stc-success-message {
     background: #d4edda;
     color: #155724;
-    padding: 10px;
-    border: 1px solid #c3e6cb;
-    border-radius: 4px;
-    margin-bottom: 20px;
-}
 
-.stc-testimonials-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-}
+    .stc-submission-form {
+        max-width: 600px;
+        margin: 20px 0;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background: #f9f9f9;
+    }
 
-.stc-testimonial-item {
-    border: 1px solid #eee;
-    padding: 20px;
-    border-radius: 8px;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
+    .stc-submission-form p {
+        margin-bottom: 15px;
+    }
 
-.stc-testimonial-content {
-    font-style: italic;
-    margin-bottom: 15px;
-}
+    .stc-submission-form label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
 
-.stc-testimonial-author {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #eee;
-    padding-top: 10px;
-}
+    .stc-submission-form input[type="text"],
+    .stc-submission-form input[type="email"],
+    .stc-submission-form select,
+    .stc-submission-form textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
 
-.stc-rating {
-    color: #f39c12;
-}
+    .stc-success-message {
+        background: #d4edda;
+        color: #155724;
+        padding: 10px;
+        border: 1px solid #c3e6cb;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    .stc-testimonials-carousel {
+        position: relative;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 50px;
+        /* Space for arrows */
+        min-height: 300px;
+        /* Prevent jumping */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .stc-testimonial-item {
+        display: none;
+        /* Hidden by default, JS toggles this */
+        text-align: center;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+    }
+
+    .stc-testimonial-image img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 15px;
+        border: 3px solid #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .stc-rating {
+        color: #f39c12;
+        font-size: 20px;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .stc-testimonial-content {
+        font-size: 1.1em;
+        font-style: italic;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+    .stc-testimonial-author {
+        font-weight: bold;
+        font-size: 1.2em;
+        color: #333;
+    }
+
+    .stc-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.05);
+        border: none;
+        font-size: 30px;
+        cursor: pointer;
+
+        .stc-submission-form {
+            max-width: 600px;
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+
+        .stc-submission-form p {
+            margin-bottom: 15px;
+        }
+
+        .stc-submission-form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stc-submission-form input[type="text"],
+        .stc-submission-form input[type="email"],
+        .stc-submission-form select,
+        .stc-submission-form textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .stc-success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .stc-testimonials-carousel {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 50px;
+            /* Space for arrows */
+            min-height: 300px;
+            /* Prevent jumping */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stc-testimonial-item {
+            display: none;
+            /* Hidden by default, JS toggles this */
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        .stc-testimonial-image img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .stc-rating {
+            color: #f39c12;
+            font-size: 20px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .stc-testimonial-content {
+            font-size: 1.1em;
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .stc-testimonial-author {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .stc-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 50%;
+            transition: background 0.3s;
+            z-index: 10;
+        }
+
+        .stc-nav-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .stc-prev {
+            left: 0;
+        }
+
+        .stc-next {
+            right: 0;
+        }

@@ -12,6 +12,10 @@ class STC_Post_Types {
 		add_action( 'init', array( $this, 'register_testimonial_cpt' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'save_meta_boxes' ) );
+		
+		// Custom Columns
+		add_filter( 'manage_testimonial_posts_columns', array( $this, 'set_custom_edit_testimonial_columns' ) );
+		add_action( 'manage_testimonial_posts_custom_column', array( $this, 'custom_testimonial_column' ), 10, 2 );
 	}
 
 	/**
@@ -51,7 +55,7 @@ class STC_Post_Types {
 			'label'                 => __( 'Testimonial', 'simple-testimonials-collector' ),
 			'description'           => __( 'Customer Testimonials', 'simple-testimonials-collector' ),
 			'labels'                => $labels,
-			'supports'              => array( 'title', 'editor' ),
+			'supports'              => array( 'title', 'editor', 'thumbnail' ),
 			'hierarchical'          => false,
 			'public'                => true,
 			'show_ui'               => true,
@@ -150,6 +154,56 @@ class STC_Post_Types {
 		if ( isset( $_POST['stc_email'] ) ) {
 			$email = sanitize_email( $_POST['stc_email'] );
 			update_post_meta( $post_id, '_stc_email', $email );
+		}
+	}
+
+	/**
+	 * Add custom columns to the testimonial list.
+	 *
+	 * @param array $columns The existing columns.
+	 * @return array The modified columns.
+	 */
+	public function set_custom_edit_testimonial_columns( $columns ) {
+		$new_columns = array();
+		$new_columns['cb'] = $columns['cb'];
+		$new_columns['title'] = $columns['title'];
+		$new_columns['stc_rating'] = __( 'Rating', 'simple-testimonials-collector' );
+		$new_columns['stc_action'] = __( 'Action', 'simple-testimonials-collector' );
+		$new_columns['date'] = $columns['date'];
+		return $new_columns;
+	}
+
+	/**
+	 * Render custom columns.
+	 *
+	 * @param string $column The column name.
+	 * @param int    $post_id The post ID.
+	 */
+	public function custom_testimonial_column( $column, $post_id ) {
+		switch ( $column ) {
+			case 'stc_rating':
+				$rating = get_post_meta( $post_id, '_stc_rating', true );
+				echo $rating ? intval( $rating ) . '/5' : '-';
+				break;
+
+			case 'stc_action':
+				$post_status = get_post_status( $post_id );
+				if ( 'pending' === $post_status ) {
+					$approve_url = wp_nonce_url(
+						add_query_arg(
+							array(
+								'action' => 'stc_approve_testimonial',
+								'post_id' => $post_id,
+							),
+							admin_url( 'admin-post.php' )
+						),
+						'stc_approve_testimonial_' . $post_id
+					);
+					echo '<a href="' . esc_url( $approve_url ) . '" class="button button-primary">' . __( 'Approve', 'simple-testimonials-collector' ) . '</a>';
+				} else {
+					echo '<span class="dashicons dashicons-yes" style="color: green;"></span> ' . __( 'Approved', 'simple-testimonials-collector' );
+				}
+				break;
 		}
 	}
 }
